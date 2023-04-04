@@ -1,0 +1,28 @@
+{
+  "trains": {
+    "id": 1,
+    "trainName": "Başkent Ekspres",
+    "wagons": [
+      {
+        "id": 1,
+        "wagonName": "Vagon1",
+        "wagonCapacity": 100,
+        "filledSeats": 68
+      }
+    ]
+  },
+  "wagons": {
+    "id": 2,
+    "wagonName": "Vagon2",
+    "wagonCapacity": 90,
+    "filledSeats": 50
+  },
+  "wagons": {
+    "id": 3,
+    "wagonName": "Vagon3",
+    "wagonCapacity": 80,
+    "filledSeats": 80
+  },
+  "reservationPersonCount": 3,
+  "canPeopleBeSeatedInDifferentWagons": true
+}
