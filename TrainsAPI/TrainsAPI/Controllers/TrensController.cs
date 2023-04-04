@@ -18,27 +18,31 @@ namespace TrainsAPI.Controllers
         [HttpPost]
         public IActionResult PostReservation(AddRezervation rezervation)
         {
-            if (rezervation.Wagons.FilledSeats >= rezervation.Wagons.WagonCapacity * 0.7)
+            var filledseats = rezervation.Trains.Wagons[3].WagonCapacity;
+            var capasity = rezervation.Trains.Wagons[2].WagonCapacity;
+            for (int i = 0; i < rezervation.Trains.Wagons.Count; i++)
             {
-                return BadRequest(new { error = "Kişi sayısı Vagon kapasitesinin %70 inden fazla olduğu için kayıt yapılamıyor." });
-            }
-            else
-            {
-                return Ok(new
+                if (filledseats >= capasity * 0.7)
                 {
-                    RezervasyonYapilabilir = true,
-                    YerlesimAyrinti = new List<WagonSeatAssignment>()
-                });
+                    return BadRequest(new { error = "Kişi sayısı Vagon kapasitesinin %70 inden fazla olduğu için kayıt yapılamıyor." });
+                }
+                else
+                {
+                    return Ok(new
+                    {
+                        RezervasyonYapilabilir = true,
+                        YerlesimAyrinti = new List<WagonSeatAssignment>()
+                    });
+                }
             }
-
-            
+            return Ok();
         }
         private List<WagonSeatAssignment> GetSeatAssignments(AddRezervation reservation)
         {
             var seatAssignments = new List<WagonSeatAssignment>();
             foreach (var wagon in reservation.Trains.Wagons)
             {
-                if (wagon.WagonCapacity - wagon.FilledSeats >=reservation.ReservationPersonCount)
+                if (wagon.WagonCapacity - wagon.FilledSeats >= reservation.ReservationPersonCount)
                 {
                     seatAssignments.Add(new WagonSeatAssignment());
                 }

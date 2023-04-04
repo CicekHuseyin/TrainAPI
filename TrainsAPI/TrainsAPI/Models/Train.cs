@@ -5,6 +5,6 @@ namespace TrainsAPI.Models
     {
         public int ID { get; set; }
         public string? TrainName { get; set; } // Tren Adı
-        public List<Wagon> Wagons { get; set; }
+        public List<Wagon>? Wagons { get; set; }
     }
 }
