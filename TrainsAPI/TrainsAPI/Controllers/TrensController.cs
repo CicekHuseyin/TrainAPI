@@ -18,11 +18,10 @@ namespace TrainsAPI.Controllers
         [HttpPost]
         public IActionResult PostReservation(AddRezervation rezervation)
         {
-            var filledseats = rezervation.Trains.Wagons[3].WagonCapacity;
-            var capasity = rezervation.Trains.Wagons[2].WagonCapacity;
+            
             for (int i = 0; i < rezervation.Trains.Wagons.Count; i++)
             {
-                if (filledseats >= capasity * 0.7)
+                if (rezervation.Wagons.FilledSeats >= rezervation.Wagons.WagonCapacity * 0.7)
                 {
                     return BadRequest(new { error = "Kişi sayısı Vagon kapasitesinin %70 inden fazla olduğu için kayıt yapılamıyor." });
                 }
@@ -39,21 +38,20 @@ namespace TrainsAPI.Controllers
         }
         private List<WagonSeatAssignment> GetSeatAssignments(AddRezervation reservation)
         {
+            var canMakeRezervation = false;
             var seatAssignments = new List<WagonSeatAssignment>();
             foreach (var wagon in reservation.Trains.Wagons)
             {
                 if (wagon.WagonCapacity - wagon.FilledSeats >= reservation.ReservationPersonCount)
                 {
-                    seatAssignments.Add(new WagonSeatAssignment());
+                    seatAssignments.Add(new WagonSeatAssignment { WagonName = wagon.WagonName, PersonCount = reservation.ReservationPersonCount });
+                    canMakeRezervation = true;
+                    break;
                 }
             }
             return seatAssignments;
         }
 
-        public class WagonSeatAssignment
-        {
-            public string WagonName { get; set; }
-            public int PersonCount { get; set; }
-        }
+
     }
 }
